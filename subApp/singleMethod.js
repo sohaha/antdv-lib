@@ -1,6 +1,6 @@
-// import store from '@/store';
-import { router } from '@/main';
+import { single } from './singleBootstrap';
 import { log, warn } from '../debug';
+
 const noticeState = {};
 
 export const notice = ({ from }) => {
@@ -36,7 +36,8 @@ const goto = state => {
     return Promise.reject(new Error(`单应用无法跳转主应用路由: ${data?.path}`));
   }
 
-  return router.push(data).then(to => {
+  console.log(single.instance);
+  return single.instance.$router.push(data).then(to => {
     console.log('路由跳转完毕', to);
     return to;
   });
