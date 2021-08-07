@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import store from '@/store';
 import singleMethod from '@/singleMethod';
-import { isDesktop, isSingle } from './singleBootstrap';
+import { isDesktop, isSingle, single } from './singleBootstrap';
 
 // 给主应用或客户端发送通知
 function emit(props) {
@@ -33,7 +33,7 @@ function emit(props) {
 // 获取传递给当前页面的数据
 function notice(props) {
   const emitNotice = emit(props);
-  return () => {
+  return function() {
     const from = fullPath();
     if (isSingle()) {
       // qiankun 需要特殊处理
@@ -151,10 +151,10 @@ function globalRegister(props, initState = {}) {
 export default globalRegister;
 
 function fullPath() {
-  return location.href;
-  // const currentRoute = router.currentRoute;
-  // const baseRoute = router?.options?.base || '/';
-  // return baseRoute.substr(0, baseRoute.length - 1) + currentRoute.fullPath;
+  return (
+    location.origin +
+    completionCurrentPath(single.router.currentRoute.fullPath, true)
+  );
 }
 
 const a = document.createElement('a');

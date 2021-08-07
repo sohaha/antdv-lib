@@ -36,7 +36,6 @@ const goto = state => {
     return Promise.reject(new Error(`单应用无法跳转主应用路由: ${data?.path}`));
   }
 
-  console.log(single.instance);
   return single.instance.$router.push(data).then(to => {
     console.log('路由跳转完毕', to);
     return to;

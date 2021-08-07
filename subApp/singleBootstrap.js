@@ -2,6 +2,7 @@ import globalRegister from './globa';
 
 export const single = {
   store: null,
+  router: null,
   instance: null,
   destroy: () => {},
   render: () => {},
@@ -13,15 +14,21 @@ export function initSingle({ render, store }) {
   runAloneApp({ render, store });
 }
 
+export function bindInstance({ router }) {
+  single.router = router;
+}
+
 export async function bootstrap() {}
+
 export async function update() {}
+
 // 乾坤挂载
 export async function mount(props) {
   globalRegister(props, (props.globalStore && props.globalStore.state) || {});
   const app = single.render(props);
   single.instance = app.instance;
-  single.router = app.router;
 }
+
 export async function unmount() {
   if (!single.instance) {
     return;
@@ -88,7 +95,6 @@ function runAloneApp({ render, instance }) {
 
       const app = render({ appName: isDesktop() ? '客户端应用' : '独立应用' });
       single.instance = app.instance;
-      single.router = app.router;
       single.instance.getNoticeState();
     })();
   }
